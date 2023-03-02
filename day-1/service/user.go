@@ -1,16 +1,52 @@
 package service
 
 import (
+	"day-1/model"
 	"day-1/repository"
 	"errors"
 )
 
-func GetUser() error {
-	user := repository.GetAllUser()
+type UserService interface {
+	UserAvail(user model.User) (model.User, error)
+	UserValid(user model.User) (model.User, error)
+}
 
-	if len(user) == 0 {
-		return errors.New("no user")
+type userService struct {
+	ur repository.UserRepository
+}
+
+func NewUserService(userRepo repository.UserRepository) UserService {
+	return &userService{userRepo}
+}
+
+
+func (u *userService) UserAvail(user model.User) (model.User, error) {
+	userRepo, err := u.ur.GetUserByUsername(user.Username)
+
+	if err != nil {
+		return model.User{}, err
 	}
 
-	return nil
-} 
+	if userRepo.Username != user.Username {
+		return model.User{},errors.New("no users")
+	}
+
+	return userRepo, nil
+}
+
+
+func (u *userService) UserValid(user model.User) (model.User, error) {
+	userRepo, err :=  u.ur.GetUserByUsername(user.Username)
+
+	if err != nil {
+		return model.User{}, err
+	}
+
+	if userRepo.Username != user.Username || userRepo.Password != user.Password {
+		return model.User{}, errors.New("wrong username or password")
+	}
+
+	return userRepo, nil
+}
+
+

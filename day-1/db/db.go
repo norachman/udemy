@@ -21,7 +21,7 @@ var db *gorm.DB
 func Connection() error {
 	var err error
 
-	postgre := "postgres://postgres:12januari@localhost:5432/postgres"
+	postgre := "postgres://postgres:12januari@localhost:5432/course"
 	
 	dsn := postgre
 
@@ -36,7 +36,6 @@ func Connection() error {
 	if e != nil {
 		return e
 	}
-
 	return nil
 }
 
