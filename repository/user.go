@@ -10,8 +10,8 @@ import (
 type UserRepository interface {
 	GetAllUser() ([]model.User, error)
 	GetUserByUsername(username string) (model.User, error)
-	StoreUser(user *model.User) error
-	UpdateUser(user *model.User) error
+	StoreUser(user model.User) error
+	UpdateUser(user model.User) error
 	DeleteUser(id int) error
 }
 
@@ -51,7 +51,7 @@ func (u *userRepository) GetUserByUsername(username string) (model.User, error) 
 	return user, nil
 }
 
-func (u *userRepository) StoreUser(user *model.User) error {
+func (u *userRepository) StoreUser(user model.User) error {
 	pwd := base64.StdEncoding.EncodeToString([]byte(user.Password))
 	user.Password = pwd
 
@@ -63,7 +63,7 @@ func (u *userRepository) StoreUser(user *model.User) error {
 	return nil
 }
 
-func (u *userRepository) UpdateUser(user *model.User) error {
+func (u *userRepository) UpdateUser(user model.User) error {
 	resp := u.db.Table("users").Updates(user)
 	if resp.Error != nil {
 		return resp.Error

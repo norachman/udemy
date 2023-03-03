@@ -14,7 +14,17 @@ type User struct {
 		
 }
 
+type UserLogin struct {
+	Username	string		`json:"username"`
+	Password	string		`json:"password"`
+}
+
+type UserRegister struct {
+	Fullname 	string 		`json:"fullname"`
+	Username	string		`json:"username"`
+	Password	string		`json:"password"`
+}
+
 type UserResponse struct{
-	Name		string
 	Message		string
 }
